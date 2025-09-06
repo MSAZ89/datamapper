@@ -23,92 +23,427 @@
 	// All accepted CRM fields with their pattern variations
 	const fieldPatterns: { [key: string]: RegExp[] } = {
 		'First Name': [
-			/^(first.?name|fname|contact.?first|given.?name|contact[_\s]?[0-9]*[_\s]?first)$/i
+			// Original patterns
+			/^(first.?name|fname|contact.?first|given.?name|contact[_\s]?[0-9]*[_\s]?first)$/i,
+			// Additional flexible patterns
+			/^(first|firstname|given|forename)$/i,
+			/^(f.?name|f_name)$/i,
+			/^(name.?first|name_first)$/i
 		],
 		'Last Name': [
-			/^(last.?name|lname|contact.?last|surname|family.?name|contact[_\s]?[0-9]*[_\s]?last)$/i
+			// Original patterns
+			/^(last.?name|lname|contact.?last|surname|family.?name|contact[_\s]?[0-9]*[_\s]?last)$/i,
+			// Additional flexible patterns
+			/^(last|lastname|surname|family)$/i,
+			/^(l.?name|l_name)$/i,
+			/^(name.?last|name_last)$/i
 		],
-		Company: [/^(company|organization|org|business|employer|contact[_\s]?[0-9]*[_\s]?company)$/i],
-		'Job Title': [/^(job.?title|title|position|role|occupation|contact[_\s]?[0-9]*[_\s]?title)$/i],
+		Company: [
+			/^(company|organization|org|business|employer|contact[_\s]?[0-9]*[_\s]?company)$/i,
+			// Additional patterns
+			/^(corp|corporation|firm|agency|enterprise)$/i,
+			/^(work|workplace|office)$/i
+		],
+		'Job Title': [
+			/^(job.?title|title|position|role|occupation|contact[_\s]?[0-9]*[_\s]?title)$/i,
+			// Additional patterns
+			/^(job|profession|career|work.?title)$/i
+		],
 		'Home Phone': [
-			/^(home.?phone|home.?tel|residential.?phone|contact[_\s]?[0-9]*[_\s]?home.?phone)$/i
+			/^(home.?phone|home.?tel|residential.?phone|contact[_\s]?[0-9]*[_\s]?home.?phone)$/i,
+			// Additional patterns
+			/^(phone.?home|home.?number|house.?phone)$/i,
+			/^(h.?phone|hphone)$/i
 		],
 		'Business Phone': [
-			/^(business.?phone|work.?phone|office.?phone|company.?phone|contact[_\s]?[0-9]*[_\s]?business.?phone)$/i
+			/^(business.?phone|work.?phone|office.?phone|company.?phone|contact[_\s]?[0-9]*[_\s]?business.?phone)$/i,
+			// Additional patterns
+			/^(phone.?work|phone.?business|work.?number|office.?number)$/i,
+			/^(w.?phone|wphone|b.?phone|bphone)$/i
 		],
 		'Mobile Phone': [
-			/^(mobile|cell|cellular|mobile.?phone|cell.?phone|contact[_\s]?[0-9]*[_\s]?mobile)$/i
+			/^(mobile|cell|cellular|mobile.?phone|cell.?phone|contact[_\s]?[0-9]*[_\s]?mobile)$/i,
+			// Additional patterns
+			/^(phone.?mobile|phone.?cell|m.?phone|mphone|c.?phone|cphone)$/i,
+			/^(cellphone|smartphone)$/i
 		],
-		'Home Fax': [/^(home.?fax|residential.?fax|contact[_\s]?[0-9]*[_\s]?home.?fax)$/i],
+		'Home Fax': [
+			/^(home.?fax|residential.?fax|contact[_\s]?[0-9]*[_\s]?home.?fax)$/i,
+			// Additional patterns
+			/^(fax.?home|h.?fax|hfax)$/i
+		],
 		'E-mail Address': [
-			/^(email|e.?mail|email.?address|contact.?email|contact[_\s]?[0-9]*[_\s]?email)$/i
+			/^(email|e.?mail|email.?address|contact.?email|contact[_\s]?[0-9]*[_\s]?email)$/i,
+			// Additional patterns
+			/^(mail|address|e_mail|e\.mail|electronic.?mail)$/i,
+			/^(primary.?email|main.?email)$/i
 		],
-		'Web Page': [/^(website|web.?page|url|web.?site|homepage|contact[_\s]?[0-9]*[_\s]?website)$/i],
-		Birthday: [/^(birthday|birth.?date|dob|date.?of.?birth|contact[_\s]?[0-9]*[_\s]?birthday)$/i],
-		Anniversary: [/^(anniversary|wedding.?anniversary|contact[_\s]?[0-9]*[_\s]?anniversary)$/i],
+		'Web Page': [
+			/^(website|web.?page|url|web.?site|homepage|contact[_\s]?[0-9]*[_\s]?website)$/i,
+			// Additional patterns
+			/^(site|web|www|link|page)$/i
+		],
+		Birthday: [
+			/^(birthday|birth.?date|dob|date.?of.?birth|contact[_\s]?[0-9]*[_\s]?birthday)$/i,
+			// Additional patterns
+			/^(birth|bday|born|birthdate|b.?day)$/i
+		],
+		Anniversary: [
+			/^(anniversary|wedding.?anniversary|contact[_\s]?[0-9]*[_\s]?anniversary)$/i,
+			// Additional patterns
+			/^(wedding|marriage.?date|married)$/i
+		],
 		'Home Sale Anniversary': [
-			/^(home.?sale.?anniversary|purchase.?date|contact[_\s]?[0-9]*[_\s]?home.?sale)$/i
+			/^(home.?sale.?anniversary|purchase.?date|contact[_\s]?[0-9]*[_\s]?home.?sale)$/i,
+			// Additional patterns
+			/^(purchase|bought|home.?purchase|house.?purchase)$/i
 		],
-		Spouse: [/^(spouse|partner|husband|wife|contact[_\s]?[0-9]*[_\s]?spouse)$/i],
+		Spouse: [
+			/^(spouse|partner|husband|wife|contact[_\s]?[0-9]*[_\s]?spouse)$/i,
+			// Additional patterns
+			/^(married.?to|significant.?other|s\.o\.|so)$/i
+		],
 		'Spouse Business Phone': [
-			/^(spouse.?business.?phone|spouse.?work.?phone|partner.?business.?phone)$/i
+			/^(spouse.?business.?phone|spouse.?work.?phone|partner.?business.?phone)$/i,
+			// Additional patterns
+			/^(spouse.?phone.?work|husband.?work.?phone|wife.?work.?phone)$/i
 		],
-		'Spouse Mobile Phone': [/^(spouse.?mobile|spouse.?cell|partner.?mobile|partner.?cell)$/i],
-		'Spouse Email Address': [/^(spouse.?email|spouse.?e.?mail|partner.?email)$/i],
-		'Spouse Birthday': [/^(spouse.?birthday|spouse.?birth.?date|partner.?birthday)$/i],
-		Categories: [/^(categories|category|tags|groups|contact[_\s]?[0-9]*[_\s]?category)$/i],
-		Source: [/^(source|lead.?source|referral|contact[_\s]?[0-9]*[_\s]?source)$/i],
+		'Spouse Mobile Phone': [
+			/^(spouse.?mobile|spouse.?cell|partner.?mobile|partner.?cell)$/i,
+			// Additional patterns
+			/^(spouse.?phone|husband.?mobile|wife.?mobile|husband.?cell|wife.?cell)$/i
+		],
+		'Spouse Email Address': [
+			/^(spouse.?email|spouse.?e.?mail|partner.?email)$/i,
+			// Additional patterns
+			/^(husband.?email|wife.?email|spouse.?mail)$/i
+		],
+		'Spouse Birthday': [
+			/^(spouse.?birthday|spouse.?birth.?date|partner.?birthday)$/i,
+			// Additional patterns
+			/^(husband.?birthday|wife.?birthday|spouse.?birth)$/i
+		],
+		Categories: [
+			/^(categories|category|tags|groups|contact[_\s]?[0-9]*[_\s]?category)$/i,
+			// Additional patterns
+			/^(tag|group|type|classification|class)$/i
+		],
+		Source: [
+			/^(source|lead.?source|referral|contact[_\s]?[0-9]*[_\s]?source)$/i,
+			// Additional patterns
+			/^(origin|reference|referred.?by|how.?found)$/i
+		],
 		'Home Street': [
-			/^(home.?street|home.?address|residential.?street|contact[_\s]?[0-9]*[_\s]?home.?street)$/i
+			/^(home.?street|home.?address|residential.?street|contact[_\s]?[0-9]*[_\s]?home.?street)$/i,
+			// Additional patterns
+			/^(street|address|home.?addr|h.?address|house.?address)$/i,
+			/^(addr|street.?address|line.?1|address.?1)$/i
 		],
-		Suite: [/^(suite|apt|apartment|unit|contact[_\s]?[0-9]*[_\s]?suite)$/i],
-		'Home Address PO Box': [/^(home.?po.?box|home.?box|residential.?po.?box)$/i],
-		'Home City': [/^(home.?city|residential.?city|contact[_\s]?[0-9]*[_\s]?home.?city)$/i],
+		Suite: [
+			/^(suite|apt|apartment|unit|contact[_\s]?[0-9]*[_\s]?suite)$/i,
+			// Additional patterns
+			/^(apt.?number|apartment.?number|unit.?number|line.?2|address.?2)$/i,
+			/^(floor|level|#|number)$/i
+		],
+		'Home Address PO Box': [
+			/^(home.?po.?box|home.?box|residential.?po.?box)$/i,
+			// Additional patterns
+			/^(po.?box|p\.o\.box|box|postal.?box)$/i
+		],
+		'Home City': [
+			/^(home.?city|residential.?city|contact[_\s]?[0-9]*[_\s]?home.?city)$/i,
+			// Additional patterns
+			/^(city|town|municipality|h.?city)$/i
+		],
 		'Home State': [
-			/^(home.?state|residential.?state|home.?province|contact[_\s]?[0-9]*[_\s]?home.?state)$/i
+			/^(home.?state|residential.?state|home.?province|contact[_\s]?[0-9]*[_\s]?home.?state)$/i,
+			// Additional patterns
+			/^(state|province|region|h.?state)$/i
 		],
 		'Home Postal Code': [
-			/^(home.?zip|home.?postal|residential.?zip|contact[_\s]?[0-9]*[_\s]?home.?zip)$/i
+			/^(home.?zip|home.?postal|residential.?zip|contact[_\s]?[0-9]*[_\s]?home.?zip)$/i,
+			// Additional patterns
+			/^(zip|postal|zipcode|zip.?code|postal.?code|h.?zip)$/i
 		],
-		County: [/^(county|region|contact[_\s]?[0-9]*[_\s]?county)$/i],
-		'Business Street': [/^(business.?street|work.?street|office.?street|company.?street)$/i],
-		'Business City': [/^(business.?city|work.?city|office.?city|company.?city)$/i],
-		'Business State': [/^(business.?state|work.?state|office.?state|company.?state)$/i],
-		'Business Postal Code': [/^(business.?zip|work.?zip|office.?zip|company.?zip)$/i],
-		'E-mail 3 Address': [/^(email.?3|third.?email|e.?mail.?3|contact[_\s]?[0-9]*[_\s]?email.?3)$/i],
-		'Other E-mail': [/^(other.?email|alt.?email|alternative.?email|secondary.?email)$/i],
-		'Extra E-mails': [/^(extra.?emails|additional.?emails|more.?emails)$/i],
-		'Other Street': [/^(other.?street|alt.?street|alternative.?street|mailing.?street)$/i],
-		'Other City': [/^(other.?city|alt.?city|alternative.?city|mailing.?city)$/i],
-		'Other State': [/^(other.?state|alt.?state|alternative.?state|mailing.?state)$/i],
-		'Other Postal Code': [/^(other.?zip|alt.?zip|alternative.?zip|mailing.?zip)$/i],
-		'Other Phone': [/^(other.?phone|alt.?phone|alternative.?phone|additional.?phone)$/i],
-		'Business Fax': [/^(business.?fax|work.?fax|office.?fax|company.?fax)$/i],
-		'Child 1': [/^(child.?1|first.?child|kid.?1|son.?1|daughter.?1)$/i],
-		'Child 1 Birthday': [/^(child.?1.?birthday|first.?child.?birthday|kid.?1.?birthday)$/i],
-		'Child 2': [/^(child.?2|second.?child|kid.?2|son.?2|daughter.?2)$/i],
-		'Child 2 Birthday': [/^(child.?2.?birthday|second.?child.?birthday|kid.?2.?birthday)$/i],
-		'Child 3': [/^(child.?3|third.?child|kid.?3|son.?3|daughter.?3)$/i],
-		'Child 3 Birthday': [/^(child.?3.?birthday|third.?child.?birthday|kid.?3.?birthday)$/i],
-		'Child 4': [/^(child.?4|fourth.?child|kid.?4|son.?4|daughter.?4)$/i],
-		'Child 4 Birthday': [/^(child.?4.?birthday|fourth.?child.?birthday|kid.?4.?birthday)$/i],
-		'Child 5': [/^(child.?5|fifth.?child|kid.?5|son.?5|daughter.?5)$/i],
-		'Child 5 Birthday': [/^(child.?5.?birthday|fifth.?child.?birthday|kid.?5.?birthday)$/i],
-		Country: [/^(country|nation|contact[_\s]?[0-9]*[_\s]?country)$/i],
+		County: [
+			/^(county|region|contact[_\s]?[0-9]*[_\s]?county)$/i,
+			// Additional patterns
+			/^(parish|borough|district)$/i
+		],
+		'Business Street': [
+			/^(business.?street|work.?street|office.?street|company.?street)$/i,
+			// Additional patterns
+			/^(work.?address|business.?address|office.?address|company.?address)$/i,
+			/^(b.?address|w.?address|business.?addr|work.?addr)$/i
+		],
+		'Business City': [
+			/^(business.?city|work.?city|office.?city|company.?city)$/i,
+			// Additional patterns
+			/^(work.?town|business.?town|b.?city|w.?city)$/i
+		],
+		'Business State': [
+			/^(business.?state|work.?state|office.?state|company.?state)$/i,
+			// Additional patterns
+			/^(work.?province|business.?province|b.?state|w.?state)$/i
+		],
+		'Business Postal Code': [
+			/^(business.?zip|work.?zip|office.?zip|company.?zip)$/i,
+			// Additional patterns
+			/^(work.?postal|business.?postal|b.?zip|w.?zip)$/i
+		],
+		'E-mail 3 Address': [
+			/^(email.?3|third.?email|e.?mail.?3|contact[_\s]?[0-9]*[_\s]?email.?3)$/i,
+			// Additional patterns
+			/^(email3|mail3|e_mail_3|tertiary.?email)$/i
+		],
+		'Other E-mail': [
+			/^(other.?email|alt.?email|alternative.?email|secondary.?email)$/i,
+			// Additional patterns
+			/^(email.?2|second.?email|backup.?email|additional.?email)$/i,
+			/^(email2|mail2|alternate.?email)$/i
+		],
+		'Extra E-mails': [
+			/^(extra.?emails|additional.?emails|more.?emails)$/i,
+			// Additional patterns
+			/^(other.?emails|alt.?emails|multiple.?emails)$/i
+		],
+		'Other Street': [
+			/^(other.?street|alt.?street|alternative.?street|mailing.?street)$/i,
+			// Additional patterns
+			/^(mailing.?address|alt.?address|other.?address|secondary.?address)$/i
+		],
+		'Other City': [
+			/^(other.?city|alt.?city|alternative.?city|mailing.?city)$/i,
+			// Additional patterns
+			/^(secondary.?city|alternate.?city|mail.?city)$/i
+		],
+		'Other State': [
+			/^(other.?state|alt.?state|alternative.?state|mailing.?state)$/i,
+			// Additional patterns
+			/^(secondary.?state|alternate.?state|mail.?state)$/i
+		],
+		'Other Postal Code': [
+			/^(other.?zip|alt.?zip|alternative.?zip|mailing.?zip)$/i,
+			// Additional patterns
+			/^(secondary.?zip|alternate.?zip|mail.?zip|other.?postal)$/i
+		],
+		'Other Phone': [
+			/^(other.?phone|alt.?phone|alternative.?phone|additional.?phone)$/i,
+			// Additional patterns
+			/^(secondary.?phone|extra.?phone|backup.?phone)$/i,
+			/^(phone.?2|phone2|second.?phone)$/i
+		],
+		'Business Fax': [
+			/^(business.?fax|work.?fax|office.?fax|company.?fax)$/i,
+			// Additional patterns
+			/^(fax.?work|fax.?business|b.?fax|w.?fax)$/i
+		],
+		'Child 1': [
+			/^(child.?1|first.?child|kid.?1|son.?1|daughter.?1)$/i,
+			// Additional patterns
+			/^(child1|kid1|eldest|oldest.?child|first.?kid)$/i
+		],
+		'Child 1 Birthday': [
+			/^(child.?1.?birthday|first.?child.?birthday|kid.?1.?birthday)$/i,
+			// Additional patterns
+			/^(child1.?birthday|kid1.?birthday|eldest.?birthday)$/i
+		],
+		'Child 2': [
+			/^(child.?2|second.?child|kid.?2|son.?2|daughter.?2)$/i,
+			// Additional patterns
+			/^(child2|kid2|middle.?child|second.?kid)$/i
+		],
+		'Child 2 Birthday': [
+			/^(child.?2.?birthday|second.?child.?birthday|kid.?2.?birthday)$/i,
+			// Additional patterns
+			/^(child2.?birthday|kid2.?birthday|middle.?child.?birthday)$/i
+		],
+		'Child 3': [
+			/^(child.?3|third.?child|kid.?3|son.?3|daughter.?3)$/i,
+			// Additional patterns
+			/^(child3|kid3|youngest|third.?kid)$/i
+		],
+		'Child 3 Birthday': [
+			/^(child.?3.?birthday|third.?child.?birthday|kid.?3.?birthday)$/i,
+			// Additional patterns
+			/^(child3.?birthday|kid3.?birthday|youngest.?birthday)$/i
+		],
+		'Child 4': [
+			/^(child.?4|fourth.?child|kid.?4|son.?4|daughter.?4)$/i,
+			// Additional patterns
+			/^(child4|kid4|fourth.?kid)$/i
+		],
+		'Child 4 Birthday': [
+			/^(child.?4.?birthday|fourth.?child.?birthday|kid.?4.?birthday)$/i,
+			// Additional patterns
+			/^(child4.?birthday|kid4.?birthday)$/i
+		],
+		'Child 5': [
+			/^(child.?5|fifth.?child|kid.?5|son.?5|daughter.?5)$/i,
+			// Additional patterns
+			/^(child5|kid5|fifth.?kid)$/i
+		],
+		'Child 5 Birthday': [
+			/^(child.?5.?birthday|fifth.?child.?birthday|kid.?5.?birthday)$/i,
+			// Additional patterns
+			/^(child5.?birthday|kid5.?birthday)$/i
+		],
+		Country: [
+			/^(country|nation|contact[_\s]?[0-9]*[_\s]?country)$/i,
+			// Additional patterns
+			/^(nationality|homeland)$/i
+		],
 		Subdivision: [
-			/^(subdivision|district|area|neighborhood|contact[_\s]?[0-9]*[_\s]?subdivision)$/i
+			/^(subdivision|district|area|neighborhood|contact[_\s]?[0-9]*[_\s]?subdivision)$/i,
+			// Additional patterns
+			/^(neighborhood|neighbourhood|district|area|zone)$/i
 		],
-		'Last Contact Date': [/^(last.?contact|last.?contacted|contact.?date|last.?call)$/i],
-		Twitter: [/^(twitter|@|social|contact[_\s]?[0-9]*[_\s]?twitter)$/i],
-		Rank: [/^(rank|priority|level|grade|contact[_\s]?[0-9]*[_\s]?rank)$/i],
-		'Contact Status': [/^(status|contact.?status|lead.?status|customer.?status)$/i],
-		Notes: [/^(notes|comments|remarks|description|contact[_\s]?[0-9]*[_\s]?notes)$/i],
-		'Date Met': [/^(date.?met|first.?met|meeting.?date|introduction.?date)$/i],
-		'Assigned To': [/^(assigned.?to|owner|salesperson|agent|rep)$/i],
-		'Important Dates': [/^(important.?dates|key.?dates|special.?dates)$/i],
-		'Extra Details': [/^(extra.?details|additional.?info|misc|miscellaneous)$/i],
-		'Custom Fields': [/^(custom|custom.?fields|additional.?fields|extra.?fields)$/i]
+		'Last Contact Date': [
+			/^(last.?contact|last.?contacted|contact.?date|last.?call)$/i,
+			// Additional patterns
+			/^(contacted|last.?touch|last.?reached|last.?spoke)$/i
+		],
+		Twitter: [
+			/^(twitter|@|social|contact[_\s]?[0-9]*[_\s]?twitter)$/i,
+			// Additional patterns
+			/^(handle|username|social.?media|@handle)$/i
+		],
+		Rank: [
+			/^(rank|priority|level|grade|contact[_\s]?[0-9]*[_\s]?rank)$/i,
+			// Additional patterns
+			/^(rating|score|importance|tier)$/i
+		],
+		'Contact Status': [
+			/^(status|contact.?status|lead.?status|customer.?status)$/i,
+			// Additional patterns
+			/^(stage|phase|state|condition)$/i
+		],
+		Notes: [
+			/^(notes|comments|remarks|description|contact[_\s]?[0-9]*[_\s]?notes)$/i,
+			// Additional patterns
+			/^(note|comment|memo|details|info|information)$/i
+		],
+		'Date Met': [
+			/^(date.?met|first.?met|meeting.?date|introduction.?date)$/i,
+			// Additional patterns
+			/^(met|introduced|first.?contact|initial.?contact)$/i
+		],
+		'Assigned To': [
+			/^(assigned.?to|owner|salesperson|agent|rep)$/i,
+			// Additional patterns
+			/^(assigned|owner|responsible|handler|manager)$/i
+		],
+		'Important Dates': [
+			/^(important.?dates|key.?dates|special.?dates)$/i,
+			// Additional patterns
+			/^(dates|special|key|important)$/i
+		],
+		'Extra Details': [
+			/^(extra.?details|additional.?info|misc|miscellaneous)$/i,
+			// Additional patterns
+			/^(details|additional|extra|more.?info|other.?info)$/i
+		],
+		'Custom Fields': [
+			/^(custom|custom.?fields|additional.?fields|extra.?fields)$/i,
+			// Additional patterns
+			/^(fields|custom.?data|user.?defined|additional)$/i
+		]
 	};
+
+	class AddressParser {
+		private static readonly states = new Map<string, string>([
+			['AL', 'Alabama'],
+			['AK', 'Alaska'],
+			['AZ', 'Arizona'],
+			['AR', 'Arkansas'],
+			['CA', 'California'],
+			['CO', 'Colorado'],
+			['CT', 'Connecticut'],
+			['DE', 'Delaware'],
+			['FL', 'Florida'],
+			['GA', 'Georgia'],
+			['HI', 'Hawaii'],
+			['ID', 'Idaho'],
+			['IL', 'Illinois'],
+			['IN', 'Indiana'],
+			['IA', 'Iowa'],
+			['KS', 'Kansas'],
+			['KY', 'Kentucky'],
+			['LA', 'Louisiana'],
+			['ME', 'Maine'],
+			['MD', 'Maryland'],
+			['MA', 'Massachusetts'],
+			['MI', 'Michigan'],
+			['MN', 'Minnesota'],
+			['MS', 'Mississippi'],
+			['MO', 'Missouri'],
+			['MT', 'Montana'],
+			['NE', 'Nebraska'],
+			['NV', 'Nevada'],
+			['NH', 'New Hampshire'],
+			['NJ', 'New Jersey'],
+			['NM', 'New Mexico'],
+			['NY', 'New York'],
+			['NC', 'North Carolina'],
+			['ND', 'North Dakota'],
+			['OH', 'Ohio'],
+			['OK', 'Oklahoma'],
+			['OR', 'Oregon'],
+			['PA', 'Pennsylvania'],
+			['RI', 'Rhode Island'],
+			['SC', 'South Carolina'],
+			['SD', 'South Dakota'],
+			['TN', 'Tennessee'],
+			['TX', 'Texas'],
+			['UT', 'Utah'],
+			['VT', 'Vermont'],
+			['VA', 'Virginia'],
+			['WA', 'Washington'],
+			['WV', 'West Virginia'],
+			['WI', 'Wisconsin'],
+			['WY', 'Wyoming'],
+			['DC', 'District of Columbia']
+		]);
+
+		static parseAddress(addressStr: string) {
+			const result: Record<string, string> = {};
+			const cleaned = addressStr.replace(/\s+/g, ' ').trim();
+
+			// Match: street, city, state abbreviation/full, zip
+			const pattern = /^(.*?)\s*,?\s*(.*?)\s*,?\s*([A-Za-z]{2}|[A-Za-z\s]+)\s+(\d{5}(?:-\d{4})?)$/;
+			const match = cleaned.match(pattern);
+
+			if (match) {
+				result.street = match[1].trim();
+				result.city = match[2].trim();
+
+				let stateInput = match[3].trim();
+				let postal = match[4].trim();
+				result.postalCode = postal;
+
+				// Normalize state
+				const stateAbbrev = [...this.states.entries()].find(
+					([abbr, name]) =>
+						abbr.toLowerCase() === stateInput.toLowerCase() ||
+						name.toLowerCase() === stateInput.toLowerCase()
+				);
+				if (stateAbbrev) result.state = stateAbbrev[1];
+				else result.state = stateInput; // fallback
+
+				// Optional: separate suite/apt if exists
+				const suiteMatch = result.street.match(/(.*)\s+(?:#|Apt|Suite)\s*(.*)/i);
+				if (suiteMatch) {
+					result.street = suiteMatch[1].trim();
+					result.suite = suiteMatch[2].trim();
+				}
+			} else {
+				// fallback: if parsing fails, put everything in street
+				result.street = cleaned;
+			}
+
+			return result;
+		}
+	}
 
 	// Derived values using Svelte 5 runes
 	const stepIndex = $derived({ upload: 0, mapping: 1, preview: 2 }[step]);
@@ -151,21 +486,41 @@
 		const processedRows: CSVRow[] = [];
 
 		data.forEach((row) => {
-			// Process each row as a single contact record - don't separate spouses!
 			const cleanedContact: CSVRow = {};
 
-			// Map all fields directly - keep spouse data as spouse fields
+			// Normal field mapping first
 			Object.entries(fieldMappings).forEach(([standardField, sourceFields]) => {
 				sourceFields.forEach((sourceField) => {
 					const value = row[sourceField];
 					if (value !== null && value !== undefined && value !== '') {
-						// Use the exact standard field name from your CRM
 						cleanedContact[standardField] = value;
 					}
 				});
 			});
 
-			// Only add if we have meaningful contact data
+			// Check for concatenated data
+			Object.values(row).forEach((value) => {
+				if (typeof value === 'string' && value.length > 50) {
+					const emailPattern = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+					const phonePattern = /\b\d{10}\b/;
+					const zipPattern = /\b\d{5}\b/;
+
+					if (emailPattern.test(value) && phonePattern.test(value) && zipPattern.test(value)) {
+						const parsedData: Record<string, string | null> = {
+							email: (value.match(emailPattern) || [null])[0],
+							phone: (value.match(phonePattern) || [null])[0],
+							zip: (value.match(zipPattern) || [null])[0]
+						};
+
+						Object.entries(parsedData).forEach(([field, parsedValue]) => {
+							if (parsedValue) {
+								cleanedContact[field] = parsedValue;
+							}
+						});
+					}
+				}
+			});
+
 			if (Object.keys(cleanedContact).length > 0) {
 				processedRows.push(cleanedContact);
 			}
